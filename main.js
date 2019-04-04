@@ -38,10 +38,16 @@ class Bag {
 
 class Tetromino {
     blocks = []; // A collection of comprising Block instances
-
     // Coordinates on the game board (not the screen)
     tx = 0;
     ty = 0;
+
+    ox = 0;
+    oy = 0;
+
+    template = null;
+
+    rot = 0;
 
     color = 0xffffff;
 
@@ -67,6 +73,7 @@ class Tetromino {
             block.setColor(color);
             this.blocks.push(block);
         });
+        this.template = template;
         this.center();
     }
     findCenter () {
@@ -74,6 +81,7 @@ class Tetromino {
         let miny = this.blocks.map(b=>b.y).min();
         let maxx = this.blocks.map(b=>b.x).max();
         let maxy = this.blocks.map(b=>b.y).max();
+        console.log("bounding grid",minx,miny,maxx,maxy)
         let cx = Math.floor((maxx-minx)/2);
         let cy = Math.floor((maxy-miny)/2);
         return [cx+minx, cy+miny];
@@ -85,6 +93,7 @@ class Tetromino {
         let maxy = this.blocks.map(b=>b.y).max();
         let cx = (maxx-minx)/2;
         let cy = (maxy-miny)/2;
+        console.log("bounding",minx,miny,maxx,maxy)
         return [cx+minx, cy+miny];
     }
     center () {
@@ -95,6 +104,8 @@ class Tetromino {
         });
     }
     setPos(x, y) {
+        this.ox = x;
+        this.oy = y;
         let dx = x-this.tx;
         let dy = y-this.ty;
         this.blocks.forEach((block)=>{
@@ -106,13 +117,11 @@ class Tetromino {
 
     }
     rotateCC () {
+        this.ox = this.tx;
+        this.oy = this.ty;
         let txOld = this.tx;
         let tyOld = this.ty;
-        let c = this.findExactCenter();
-        // this.setPos(0,0); // Pop translation
-        console.log(c);
-        this.x-=c[0];
-        this.y-=c[1];
+        this.setPos(0,0); // Pop translation
 
         this.blocks.forEach((block)=>{ // Rotate over the origin (0, 0)
             let x = block.x;
@@ -120,12 +129,18 @@ class Tetromino {
             block.x=-y;
             block.y=x;
         });
+
         this.setPos(txOld, tyOld); // Push translation
-        console.log(this.findExactCenter(), this.x, this.y);
-        // let dx = this.x-this.findCenter()[0];
-        // let dy = this.y-this.findCenter()[1];
-        // this.x+=dx;
-        // this.y+=dy;
+        // console.log("center",this.findExactCenter());
+        // let dx = this.x-this.findExactCenter()[0];
+        // let dy = this.y-this.findExactCenter()[1];
+        // console.log("delta",dx,dy);
+        // console.log("pos",this.x,this.y)
+        // this.x+=Math.floor(dx);
+        // this.y+=Math.floor(dy);
+        // this.tx-=Math.floor(dx);
+        // this.ty-=Math.floor(dy);
+        console.log("center2",this.findExactCenter());
     }
     rotateC () {
         this.rotateCC();
@@ -218,7 +233,7 @@ function initBoard() {
 function setup() {
     app.ticker.add(delta => gameLoop(delta));
     initBoard();
-    game.current = new Tetromino(minos.ipiece, darktheme.cyan);
+    game.current = new Tetromino(minos.tpiece, darktheme.purple );
     game.current.setPos(2,2);
 }
 
