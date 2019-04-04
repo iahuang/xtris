@@ -1,12 +1,17 @@
 'use strict';
 // ^ was really hoping that would fix annoying bugs related to js (by design) not throwing errors when it really should. i was wrong btw
 
+
+// Extensions
+
 Array.prototype.min = function() {
-  return Math.min.apply(null, this);
+    return Math.min.apply(null, this);
 };
 Array.prototype.max = function() {
-  return Math.max.apply(null, this);
+    return Math.max.apply(null, this);
 };
+
+// Graphics initialization
 
 let app = new PIXI.Application({width: 500, height: 500});
 PIXI.loader
@@ -32,9 +37,12 @@ class Bag {
 }
 
 class Tetromino {
-    blocks = [];
+    blocks = []; // A collection of comprising Block instances
+
+    // Coordinates on the game board (not the screen)
     tx = 0;
     ty = 0;
+
     color = 0xffffff;
 
     get x() {
