@@ -1,2 +1,4 @@
 # xtris
-A Tetris clone meets Mario Maker
+Tetris meets Mario Maker
+Written in Javascript
+
