@@ -42,9 +42,6 @@ class Tetromino {
     tx = 0;
     ty = 0;
 
-    ox = 0;
-    oy = 0;
-
     template = null;
 
     rot = 0;
@@ -104,8 +101,6 @@ class Tetromino {
         });
     }
     setPos(x, y) {
-        this.ox = x;
-        this.oy = y;
         let dx = x-this.tx;
         let dy = y-this.ty;
         this.blocks.forEach((block)=>{
@@ -117,8 +112,6 @@ class Tetromino {
 
     }
     rotateCC () {
-        this.ox = this.tx;
-        this.oy = this.ty;
         let txOld = this.tx;
         let tyOld = this.ty;
         this.setPos(0,0); // Pop translation
